@@ -22,7 +22,8 @@ namespace Ftp_client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            FTPUploadFile(filename);
+            //FTPUploadFile(filename);
+            backgroundWorker1.RunWorkerAsync();
         }
         string filename;
         private string Open_File()
@@ -65,19 +66,28 @@ namespace Ftp_client
             FileStream fs = fileInf.OpenRead();
                 try
                 {
-                Stream strm = reqFTP.GetRequestStream();
+                 Stream strm = reqFTP.GetRequestStream();
                     // Читаем из потока по 2 кбайт
                     contentLen = fs.Read(buff, 0, buffLength);
-                    // Пока файл не кончится
+                // Пока файл не кончится
+                    double total = (double)fs.Length;
+                    int byteRead = 0;
+                    double read = 0;
                     while (contentLen != 0)
+                   {
+                    if (!backgroundWorker1.CancellationPending)
                     {
                         strm.Write(buff, 0, contentLen);
                         contentLen = fs.Read(buff, 0, buffLength);
+                        read += (double)contentLen;
+                        double percentage = read / total * 100;
+                        backgroundWorker1.ReportProgress((int)percentage);
                     }
+                   }
                     // Закрываем потоки
                     strm.Close();
                     fs.Close();
-                    label1.Text = "файл загружен!";
+                    //label1.Text = "файл загружен!";
                 }
                 catch (Exception ex)
                 {
@@ -88,6 +98,21 @@ namespace Ftp_client
         private void button2_Click(object sender, EventArgs e)
         {
             Open_File();
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            FTPUploadFile(filename);
+        }
+
+        private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            label1.Text = $"Uploaded {e.ProgressPercentage} %";
+        }
+
+        private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            label1.Text = "Upload complete !";
         }
     }
 }
