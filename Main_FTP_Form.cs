@@ -25,7 +25,6 @@ namespace Ftp_client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            //FTPUploadFile(filename);
             backgroundWorker1.RunWorkerAsync();
         }
         string filename;
@@ -47,19 +46,9 @@ namespace Ftp_client
             reqFTP.Credentials = new NetworkCredential("test", "test");
             reqFTP.KeepAlive = false;
             reqFTP.Method = WebRequestMethods.Ftp.ListDirectory;
-            //// Тип передачи файла
-            //reqFTP.UseBinary = true;
-            //// Сообщаем серверу о размере файла
-            //reqFTP.ContentLength = fileInf.Length;
             FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
             Stream responseStream = response.GetResponseStream();
             StreamReader reader = new StreamReader(responseStream);
-            //string[] mas_directory = reader.ReadToEnd().Split(' ');
-            //foreach (var item in mas_directory)
-            //{
-            //    Console.WriteLine(item.ToString());
-            //}
-            //listBox1.Items.Add(reader.ReadToEnd());
             string[] directory_list = reader.ReadToEnd().Split('\n');
             foreach (var item in directory_list)
             {
@@ -71,9 +60,15 @@ namespace Ftp_client
         }
         private void FTPUploadFile(string filename)
         {
-                
-                FileInfo fileInf = new FileInfo(filename);
-                string uri = "ftp://" + "192.168.1.149:2221" + string.Format("/{0}/",selected_directory) + fileInf.Name;
+               FileInfo fileInf = new FileInfo(filename);
+                if (selected_directory != null)
+                {
+                    string uri = "ftp://" + "192.168.1.149:2221" + string.Format("/{0}/", selected_directory) + fileInf.Name;
+                }
+                else
+                {
+                    MessageBox.Show("Нужно выбрать элемент!");
+                }
                 FtpWebRequest reqFTP;
                 // Создаем объект FtpWebRequest
                 reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri("ftp://" + "192.168.1.149:2221" + string.Format("/{0}/", selected_directory) + fileInf.Name));
