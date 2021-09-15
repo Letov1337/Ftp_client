@@ -9,12 +9,14 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net;
 using System.IO;
-
+using System.Diagnostics;
 
 namespace Ftp_client
 {
     public partial class Form1 : Form
     {
+        Stopwatch sw = new Stopwatch();
+        double down_speed;
         public Form1()
         {
             InitializeComponent();
@@ -32,17 +34,13 @@ namespace Ftp_client
             {
                 
             }
-            // получаем выбранный файл
             filename = openFileDialog1.FileName;
             label1.Text = filename;
             return filename;
-            //string file = Path.GetFileName(filename);
-            //// читаем файл в строку
-            
         }
         private void FTPUploadFile(string filename)
         {
-
+                
                 FileInfo fileInf = new FileInfo(filename);
                 string uri = "ftp://" + "192.168.1.149:2221" + "/bluetooth/" + fileInf.Name;
                 FtpWebRequest reqFTP;
@@ -62,19 +60,21 @@ namespace Ftp_client
                 int buffLength = 2048;
                 byte[] buff = new byte[buffLength];
                 int contentLen;
+            sw.Start();
             // Файловый поток
-            FileStream fs = fileInf.OpenRead();
-                try
+                FileStream fs = fileInf.OpenRead();
+            try
                 {
                  Stream strm = reqFTP.GetRequestStream();
                     // Читаем из потока по 2 кбайт
                     contentLen = fs.Read(buff, 0, buffLength);
                 // Пока файл не кончится
                     double total = (double)fs.Length;
-                    int byteRead = 0;
                     double read = 0;
-                    while (contentLen != 0)
-                   {
+                    int counter = 0;
+                    DateTime startTime = DateTime.Now;
+                while (contentLen != 0)
+                {
                     if (!backgroundWorker1.CancellationPending)
                     {
                         strm.Write(buff, 0, contentLen);
@@ -82,12 +82,14 @@ namespace Ftp_client
                         read += (double)contentLen;
                         double percentage = read / total * 100;
                         backgroundWorker1.ReportProgress((int)percentage);
+                        counter += contentLen;
+                        down_speed = (Convert.ToDouble(counter) / DateTime.Now.Subtract(startTime).TotalSeconds)/1024/1024;
+
                     }
-                   }
-                    // Закрываем потоки
+                }
+                // Закрываем потоки
                     strm.Close();
                     fs.Close();
-                    //label1.Text = "файл загружен!";
                 }
                 catch (Exception ex)
                 {
@@ -108,6 +110,7 @@ namespace Ftp_client
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             label1.Text = $"Uploaded {e.ProgressPercentage} %";
+            label2.Text = string.Format("Cкорость:{0:N2} мб/c",down_speed);
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
