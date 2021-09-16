@@ -88,6 +88,11 @@ namespace Ftp_client
             port = port_maskedTextBox2.Text;
             Write(ip,login,password,port);
         }
+
+        private void Login_form_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 
 }

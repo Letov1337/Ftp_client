@@ -24,5 +24,5 @@ namespace Ftp_client
     {
         public static string[] login_all { get; set; }
     }
-
+    
 }

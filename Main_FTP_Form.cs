@@ -18,6 +18,11 @@ namespace Ftp_client
         Stopwatch sw = new Stopwatch();
         double down_speed;
         string selected_directory;
+        string ip;
+        string port;
+        string login;
+        string password;
+        
         public Main_FTP_Form()
         {
             InitializeComponent();
@@ -38,32 +43,57 @@ namespace Ftp_client
             label1.Text = filename;
             return filename;
         }
-        private void FTPFolder_Load()
+        public async void Read()
         {
-            // Создаем объект FtpWebRequest
-            FtpWebRequest reqFTP = (FtpWebRequest)WebRequest.Create("ftp://192.168.1.149:2221/");
-            // Учетная запись
-            reqFTP.Credentials = new NetworkCredential("test", "test");
-            reqFTP.KeepAlive = false;
-            reqFTP.Method = WebRequestMethods.Ftp.ListDirectory;
-            FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
-            Stream responseStream = response.GetResponseStream();
-            StreamReader reader = new StreamReader(responseStream);
-            string[] directory_list = reader.ReadToEnd().Split('\n');
-            foreach (var item in directory_list)
+            int a = -1;
+            Data.login_all = new string[5];
+            string writePath = Application.StartupPath + "\\login\\login.txt";
+            using (StreamReader sr = new StreamReader(writePath, System.Text.Encoding.Default))
             {
-                listBox1.Items.Add(item);
+                string line;
+                while ((line = await sr.ReadLineAsync()) != null)
+                {
+                    a++;
+                    Data.login_all[a] = line;
+                }
             }
-            Console.WriteLine($"Directory List Complete, status {response.StatusDescription}");
-            reader.Close();
-            response.Close();
+        }
+        public void FTPFolder_Load(string ip,string port/*,string login,string pass*/)
+        {
+            
+            try
+            {
+                // Создаем объект FtpWebRequest
+                /*FtpWebRequest reqFTP = (FtpWebRequest)WebRequest.Create("ftp://192.168.1.149:2221/");*/
+                string test = string.Format("{0} {1}", ip, port);
+                FtpWebRequest reqFTP = (FtpWebRequest)WebRequest.Create(string.Format("{0} {1}",ip,port));
+                // Учетная запись
+                reqFTP.Credentials = new NetworkCredential(login, password);
+                reqFTP.KeepAlive = false;
+                reqFTP.Method = WebRequestMethods.Ftp.ListDirectory;
+                FtpWebResponse response = (FtpWebResponse)reqFTP.GetResponse();
+                Stream responseStream = response.GetResponseStream();
+                StreamReader reader = new StreamReader(responseStream);
+                string[] directory_list = reader.ReadToEnd().Split('\n');
+                foreach (var item in directory_list)
+                {
+                    listBox1.Items.Add(item);
+                }
+                Console.WriteLine($"Directory List Complete, status {response.StatusDescription}");
+                reader.Close();
+                response.Close();
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Ошибка");
+            }
         }
         private void FTPUploadFile(string filename)
         {
                FileInfo fileInf = new FileInfo(filename);
                 if (selected_directory != null)
                 {
-                    string uri = "ftp://" + "192.168.1.149:2221" + string.Format("/{0}/", selected_directory) + fileInf.Name;
+                    string uri = String.Format("ftp://{0}:{1}/", ip, port) + string.Format("/{0}/", selected_directory) + fileInf.Name;
                 }
                 else
                 {
@@ -71,7 +101,7 @@ namespace Ftp_client
                 }
                 FtpWebRequest reqFTP;
                 // Создаем объект FtpWebRequest
-                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri("ftp://" + "192.168.1.149:2221" + string.Format("/{0}/", selected_directory) + fileInf.Name));
+                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(String.Format("ftp://{0}:{1}/", ip, port) + string.Format("/{0}/", selected_directory) + fileInf.Name));
                 // Учетная запись
                 reqFTP.Credentials = new NetworkCredential("test", "test");
                 reqFTP.KeepAlive = false;
@@ -153,7 +183,10 @@ namespace Ftp_client
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            FTPFolder_Load();
+            Read();
+            ip = Data.login_all[0];
+            port = Data.login_all[1];
+            FTPFolder_Load(ip,port);
         }
 
         private void button3_Click(object sender, EventArgs e)

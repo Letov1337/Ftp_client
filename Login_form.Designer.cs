@@ -132,6 +132,7 @@ namespace Ftp_client
             this.Controls.Add(this.ip_maskedTextBox1);
             this.Name = "Login_form";
             this.Text = "Login_form";
+            this.Load += new System.EventHandler(this.Login_form_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
