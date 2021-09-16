@@ -29,10 +29,10 @@ namespace Ftp_client
         /// </summary>
         private void InitializeComponent()
         {
-            this.maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
-            this.maskedTextBox2 = new System.Windows.Forms.MaskedTextBox();
-            this.maskedTextBox3 = new System.Windows.Forms.MaskedTextBox();
-            this.maskedTextBox4 = new System.Windows.Forms.MaskedTextBox();
+            this.ip_maskedTextBox1 = new System.Windows.Forms.MaskedTextBox();
+            this.port_maskedTextBox2 = new System.Windows.Forms.MaskedTextBox();
+            this.login_maskedTextBox3 = new System.Windows.Forms.MaskedTextBox();
+            this.pass_maskedTextBox4 = new System.Windows.Forms.MaskedTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -40,35 +40,35 @@ namespace Ftp_client
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // maskedTextBox1
+            // ip_maskedTextBox1
             // 
-            this.maskedTextBox1.Location = new System.Drawing.Point(63, 39);
-            this.maskedTextBox1.Name = "maskedTextBox1";
-            this.maskedTextBox1.Size = new System.Drawing.Size(100, 20);
-            this.maskedTextBox1.TabIndex = 0;
-            this.maskedTextBox1.ValidatingType = typeof(System.DateTime);
+            this.ip_maskedTextBox1.Location = new System.Drawing.Point(63, 39);
+            this.ip_maskedTextBox1.Name = "ip_maskedTextBox1";
+            this.ip_maskedTextBox1.Size = new System.Drawing.Size(100, 20);
+            this.ip_maskedTextBox1.TabIndex = 0;
+            this.ip_maskedTextBox1.ValidatingType = typeof(System.DateTime);
             // 
-            // maskedTextBox2
+            // port_maskedTextBox2
             // 
-            this.maskedTextBox2.Location = new System.Drawing.Point(207, 36);
-            this.maskedTextBox2.Mask = "00000";
-            this.maskedTextBox2.Name = "maskedTextBox2";
-            this.maskedTextBox2.Size = new System.Drawing.Size(40, 20);
-            this.maskedTextBox2.TabIndex = 1;
+            this.port_maskedTextBox2.Location = new System.Drawing.Point(207, 36);
+            this.port_maskedTextBox2.Mask = "00000";
+            this.port_maskedTextBox2.Name = "port_maskedTextBox2";
+            this.port_maskedTextBox2.Size = new System.Drawing.Size(40, 20);
+            this.port_maskedTextBox2.TabIndex = 1;
             // 
-            // maskedTextBox3
+            // login_maskedTextBox3
             // 
-            this.maskedTextBox3.Location = new System.Drawing.Point(63, 75);
-            this.maskedTextBox3.Name = "maskedTextBox3";
-            this.maskedTextBox3.Size = new System.Drawing.Size(100, 20);
-            this.maskedTextBox3.TabIndex = 2;
+            this.login_maskedTextBox3.Location = new System.Drawing.Point(63, 75);
+            this.login_maskedTextBox3.Name = "login_maskedTextBox3";
+            this.login_maskedTextBox3.Size = new System.Drawing.Size(100, 20);
+            this.login_maskedTextBox3.TabIndex = 2;
             // 
-            // maskedTextBox4
+            // pass_maskedTextBox4
             // 
-            this.maskedTextBox4.Location = new System.Drawing.Point(63, 112);
-            this.maskedTextBox4.Name = "maskedTextBox4";
-            this.maskedTextBox4.Size = new System.Drawing.Size(100, 20);
-            this.maskedTextBox4.TabIndex = 3;
+            this.pass_maskedTextBox4.Location = new System.Drawing.Point(63, 112);
+            this.pass_maskedTextBox4.Name = "pass_maskedTextBox4";
+            this.pass_maskedTextBox4.Size = new System.Drawing.Size(100, 20);
+            this.pass_maskedTextBox4.TabIndex = 3;
             // 
             // label1
             // 
@@ -114,6 +114,7 @@ namespace Ftp_client
             this.button1.TabIndex = 8;
             this.button1.Text = "Вход";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Login_form
             // 
@@ -125,10 +126,10 @@ namespace Ftp_client
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.maskedTextBox4);
-            this.Controls.Add(this.maskedTextBox3);
-            this.Controls.Add(this.maskedTextBox2);
-            this.Controls.Add(this.maskedTextBox1);
+            this.Controls.Add(this.pass_maskedTextBox4);
+            this.Controls.Add(this.login_maskedTextBox3);
+            this.Controls.Add(this.port_maskedTextBox2);
+            this.Controls.Add(this.ip_maskedTextBox1);
             this.Name = "Login_form";
             this.Text = "Login_form";
             this.ResumeLayout(false);
@@ -138,10 +139,10 @@ namespace Ftp_client
 
         #endregion
 
-        private System.Windows.Forms.MaskedTextBox maskedTextBox1;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox2;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox3;
-        private System.Windows.Forms.MaskedTextBox maskedTextBox4;
+        private System.Windows.Forms.MaskedTextBox ip_maskedTextBox1;
+        private System.Windows.Forms.MaskedTextBox port_maskedTextBox2;
+        private System.Windows.Forms.MaskedTextBox login_maskedTextBox3;
+        private System.Windows.Forms.MaskedTextBox pass_maskedTextBox4;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
