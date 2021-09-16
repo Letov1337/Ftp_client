@@ -86,6 +86,7 @@ namespace Ftp_client
             login = login_maskedTextBox3.Text;
             password = pass_maskedTextBox4.Text;
             port = port_maskedTextBox2.Text;
+            if(ip != null || login != null)
             Write(ip,login,password,port);
         }
 
