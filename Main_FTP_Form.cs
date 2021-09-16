@@ -43,20 +43,38 @@ namespace Ftp_client
             label1.Text = filename;
             return filename;
         }
-        public async void Read()
+        //public async void Read()
+        //{
+        //    int a = -1;
+        //    Data.login_all = new string[5];
+        //    string writePath = Application.StartupPath + "\\login\\login.txt";
+        //    using (StreamReader sr = new StreamReader(writePath, System.Text.Encoding.Default))
+        //    {
+        //        string line;
+        //        while ((line = await sr.ReadLineAsync()) != null)
+        //        {
+        //            a++;
+        //            Data.login_all[a] = line;
+        //        }
+        //    }
+        //}
+        public void Read()
         {
-            int a = -1;
+            StreamReader sr = new StreamReader(Application.StartupPath + "\\login\\login.txt");
+            //Read the first line of text
+            string line = sr.ReadLine();
             Data.login_all = new string[5];
-            string writePath = Application.StartupPath + "\\login\\login.txt";
-            using (StreamReader sr = new StreamReader(writePath, System.Text.Encoding.Default))
+            //Continue to read until you reach end of file
+            int a = 0;
+            while (line != null)
             {
-                string line;
-                while ((line = await sr.ReadLineAsync()) != null)
-                {
-                    a++;
-                    Data.login_all[a] = line;
-                }
+                a++;
+                line = sr.ReadLine();
+                Data.login_all[a] = line;
             }
+            //close the file
+            sr.Close();
+            Console.ReadLine();
         }
         public void FTPFolder_Load(string ip,string port/*,string login,string pass*/)
         {
