@@ -65,10 +65,12 @@ namespace Ftp_client
            
             Data.login_all = new string[5];
             //Continue to read until you reach end of file
-            int a = 0;
+            int a = -1;
             string line;
             while ((line = sr.ReadLine()) != null)
             {
+                a++;
+                Data.login_all[a] = line;
                 Console.WriteLine(line);
             }
             //close the file
