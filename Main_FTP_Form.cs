@@ -62,20 +62,20 @@ namespace Ftp_client
         {
             StreamReader sr = new StreamReader(Application.StartupPath + "\\login\\login.txt");
             //Read the first line of text
-            string line = sr.ReadLine();
+           
             Data.login_all = new string[5];
             //Continue to read until you reach end of file
             int a = 0;
-            while (line != null)
+            string line;
+            while ((line = sr.ReadLine()) != null)
             {
-                a++;
-                line = sr.ReadLine();
-                Data.login_all[a] = line;
+                Console.WriteLine(line);
             }
             //close the file
             sr.Close();
             Console.ReadLine();
         }
+
         public void FTPFolder_Load(string ip,string port/*,string login,string pass*/)
         {
             
