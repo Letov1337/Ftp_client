@@ -78,15 +78,14 @@ namespace Ftp_client
             Console.ReadLine();
         }
 
-        public void FTPFolder_Load(string ip,string port/*,string login,string pass*/)
+        public void FTPFolder_Load(string ip,string port,string login, string pass)
         {
             
             try
             {
                 // Создаем объект FtpWebRequest
                 /*FtpWebRequest reqFTP = (FtpWebRequest)WebRequest.Create("ftp://192.168.1.149:2221/");*/
-                string test = string.Format("{0} {1}", ip, port);
-                FtpWebRequest reqFTP = (FtpWebRequest)WebRequest.Create(string.Format("{0} {1}",ip,port));
+                FtpWebRequest reqFTP = (FtpWebRequest)WebRequest.Create(string.Format("ftp://{0}:{1}/", ip,port));
                 // Учетная запись
                 reqFTP.Credentials = new NetworkCredential(login, password);
                 reqFTP.KeepAlive = false;
@@ -206,7 +205,9 @@ namespace Ftp_client
             Read();
             ip = Data.login_all[0];
             port = Data.login_all[1];
-            FTPFolder_Load(ip,port);
+            login = Data.login_all[2];
+            password = Data.login_all[3];
+            FTPFolder_Load(ip,port,login,password); 
         }
 
         private void button3_Click(object sender, EventArgs e)
