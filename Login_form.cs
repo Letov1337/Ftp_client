@@ -16,31 +16,48 @@ namespace Ftp_client
         string login;
         string password;
         string port;
-        int a = 1;
+        int b; 
         public Login_form()
         {
             InitializeComponent();
+            Read();
+            
         }
-        public async void Write(string ip, string login, string password/*, string port*/)
+        public async void Read()
+        {
+            int a = -1;
+            string writePath = Application.StartupPath + "\\login\\login.txt";
+            using (StreamReader sr = new StreamReader(writePath, System.Text.Encoding.Default))
+            {
+                
+                string line;
+                Data.login_all = new string[5];
+                while ((line = await sr.ReadLineAsync()) != null)
+                { 
+                    a++;
+                    Data.login_all[a] = line;
+                }
+                ip_maskedTextBox1.Text = Data.login_all[0];
+                login_maskedTextBox3.Text = Data.login_all[1];
+                pass_maskedTextBox4.Text = Data.login_all[2];
+                port_maskedTextBox2.Text = Data.login_all[3];
+            }
+        }
+        public async void Write(string ip, string login, string password, string port)
         {
             string writePath = Application.StartupPath + "\\login\\login.txt";
-            //string text = "Привет мир!\nПока мир...";
             try
             {
-                //using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
-                //{
-                //    await sw.WriteLineAsync(text);
-                //}
-                
-                if (a == 1)
+                if (b == 1)
                 {
+                    // запись
                     using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
                     {
                         await sw.WriteLineAsync(ip);
                         await sw.WriteLineAsync(login);
                         await sw.WriteLineAsync(password);
-                        a = 0;
-                        Console.WriteLine("Запись выполнена");
+                        await sw.WriteLineAsync(port);
+                        b = 0;
                     }
                 }
                 else
@@ -51,16 +68,15 @@ namespace Ftp_client
                         await sw.WriteLineAsync(ip);
                         await sw.WriteLineAsync(login);
                         await sw.WriteLineAsync(password);
-                        a = 1;
-                        Console.WriteLine("Очистка выполнена");
-                        Console.WriteLine("Запись выполнена");
+                        await sw.WriteLineAsync(port);
+                        b = 1;
                     }
                 }
                 
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                MessageBox.Show(e.Message);
             }
         }
 
@@ -69,7 +85,8 @@ namespace Ftp_client
             ip = ip_maskedTextBox1.Text;
             login = login_maskedTextBox3.Text;
             password = pass_maskedTextBox4.Text;
-            Write(ip,login,password);
+            port = port_maskedTextBox2.Text;
+            Write(ip,login,password,port);
         }
     }
 

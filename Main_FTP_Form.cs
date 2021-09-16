@@ -155,5 +155,13 @@ namespace Ftp_client
         {
             FTPFolder_Load();
         }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            foreach (var item in Data.login_all)
+            {
+                Console.WriteLine(item);
+            }
+        }
     }
 }

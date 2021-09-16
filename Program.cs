@@ -16,7 +16,13 @@ namespace Ftp_client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Login_form());
+            //Application.Run(new Login_form());
+            Application.Run(new Main_FTP_Form());
         }
     }
+    static class Data
+    {
+        public static string[] login_all { get; set; }
+    }
+
 }
