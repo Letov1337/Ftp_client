@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Net;
 using MaterialSkin;
 using MaterialSkin.Controls;
 namespace Ftp_client
@@ -18,14 +19,26 @@ namespace Ftp_client
         string login;
         string password;
         string port;
-        int b; 
+        const double version_soft = 0.1;
+        const string url = "https://pastebin.com/raw/8BSUmDWs";
+        int b = 1; 
         public Login_form()
         {
             InitializeComponent();
-            Read();
-            
         }
-        public async void Read()
+        private void Updater()
+        {
+            WebClient client = new WebClient();
+            if (client.DownloadString(url).Contains(version_soft.ToString()))
+            {
+                //
+            }
+            else
+            {
+                MessageBox.Show("Доступна новая версия!");
+            }
+        }
+        public void Read()
         {
             int a = -1;
             string writePath = Application.StartupPath + "\\login\\login.txt";
@@ -34,17 +47,27 @@ namespace Ftp_client
                 
                 string line;
                 Data.login_all = new string[5];
-                while ((line = await sr.ReadLineAsync()) != null)
+                while ((line = sr.ReadLine()) != null)
                 { 
                     a++;
                     Data.login_all[a] = line;
                 }
-                ip_maskedTextBox1.Text = Data.login_all[0];
-                port_maskedTextBox2.Text = Data.login_all[1];
-                login_maskedTextBox3.Text = Data.login_all[2];
-                pass_maskedTextBox4.Text = Data.login_all[3];
+                ip= Data.login_all[0];
+                port = Data.login_all[1];
+                login = Data.login_all[2];
+                password = Data.login_all[3];
             }
         }
+        public void Form2_load(string ip,string port)
+        {
+            if (ip != null || port != null)
+            {
+                Main_FTP_Form form2 = new Main_FTP_Form();
+                this.Close();
+                form2.ShowDialog();
+            }
+        }
+
         public async void Write(string ip, string login, string password, string port)
         {
             string writePath = Application.StartupPath + "\\login\\login.txt";
@@ -56,9 +79,10 @@ namespace Ftp_client
                     using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
                     {
                         await sw.WriteLineAsync(ip);
+                        await sw.WriteLineAsync(port);
                         await sw.WriteLineAsync(login);
                         await sw.WriteLineAsync(password);
-                        await sw.WriteLineAsync(port);
+                        
                         b = 0;
                     }
                 }
@@ -68,9 +92,10 @@ namespace Ftp_client
                     using (StreamWriter sw = new StreamWriter(writePath, false, System.Text.Encoding.Default))
                     {
                         await sw.WriteLineAsync(ip);
+                        await sw.WriteLineAsync(port);
                         await sw.WriteLineAsync(login);
                         await sw.WriteLineAsync(password);
-                        await sw.WriteLineAsync(port);
+                        
                         b = 1;
                     }
                 }
@@ -84,17 +109,19 @@ namespace Ftp_client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            ip = ip_maskedTextBox1.Text;
-            login = login_maskedTextBox3.Text;
-            password = pass_maskedTextBox4.Text;
-            port = port_maskedTextBox2.Text;
-            if(ip != null || login != null)
-            Write(ip,login,password,port);
+            string _ip = ip_maskedTextBox1.Text;
+            string _login = login_maskedTextBox3.Text;
+            string _password = pass_maskedTextBox4.Text;
+            string _port = port_maskedTextBox2.Text;
+            Write(_ip, _login, _password, _port);
+            Form2_load(_ip,_port);
         }
 
         private void Login_form_Load(object sender, EventArgs e)
         {
-
+            Updater();
+            Read();
+            Form2_load(ip, port);
         }
     }
 

@@ -23,17 +23,31 @@ namespace Ftp_client
         string port;
         string login;
         string password;
+        string filename;
+        const double version_soft = 0.1;
+        const string url = "https://pastebin.com/raw/8BSUmDWs";
         private NotifyIcon NI = new NotifyIcon();
         public Main_FTP_Form()
         {
             InitializeComponent();
+        }
+        private void Updater()
+        {
+            WebClient client = new WebClient();
+            if (client.DownloadString(url).Contains(version_soft.ToString()))
+            {
+                //
+            }
+            else
+            {
+                MessageBox.Show("Доступна новая версия!");
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             backgroundWorker1.RunWorkerAsync();
         }
-        string filename;
         private string Open_File()
         {
             if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
@@ -197,12 +211,14 @@ namespace Ftp_client
         {
             selected_directory = listBox1.SelectedItem.ToString();
             selected_directory = selected_directory.Replace("\r", "");
-            label1.Text = selected_directory.ToString();
+            label4.Text = string.Format("Выбрана директория:{0}", selected_directory.ToString());
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            label2.Hide();
+            Updater();
+            //label1.Hide();
+            //label2.Hide();
             Read();
             ip = Data.login_all[0];
             port = Data.login_all[1];
@@ -211,12 +227,32 @@ namespace Ftp_client
             FTPFolder_Load(ip,port,login,password); 
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        void panel1_DragDrop(object sender, DragEventArgs e)
         {
-            foreach (var item in Data.login_all)
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            filename = files[0];
+            label1.Text = filename;
+            label3.Text = "Перетащи файлы сюда";
+        }
+
+        void panel1_DragEnter(object sender, DragEventArgs e)
+        {
+                       
+            if (e.Data.GetDataPresent(DataFormats.FileDrop))
             {
-                Console.WriteLine(item);
-            }
+                label3.Text = "Отпустите мышь";
+                e.Effect = DragDropEffects.Copy;
+            }    
+        }
+
+        void panel1_DragLeave(object sender, EventArgs e)
+        {
+            label3.Text = "Перетащи файлы сюда"; 
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
