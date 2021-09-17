@@ -10,10 +10,11 @@ using System.Windows.Forms;
 using System.Net;
 using System.IO;
 using System.Diagnostics;
-
+using MaterialSkin;
+using MaterialSkin.Controls;
 namespace Ftp_client
 {
-    public partial class Main_FTP_Form : Form
+    public partial class Main_FTP_Form : MaterialForm
     {
         Stopwatch sw = new Stopwatch();
         double down_speed;
@@ -22,7 +23,7 @@ namespace Ftp_client
         string port;
         string login;
         string password;
-        
+        private NotifyIcon NI = new NotifyIcon();
         public Main_FTP_Form()
         {
             InitializeComponent();
@@ -45,14 +46,16 @@ namespace Ftp_client
         }
         private void SetBalloonTip(string Upload_final)
         {
-            notifyIcon1.Icon = SystemIcons.Exclamation;
-            notifyIcon1.BalloonTipTitle = "Balloon Tip Title";
-            notifyIcon1.BalloonTipText = Upload_final;
-            notifyIcon1.BalloonTipIcon = ToolTipIcon.Error;
+            NI.BalloonTipText = Upload_final;
+            NI.BalloonTipTitle = "Ftp_client";
+            NI.BalloonTipIcon = ToolTipIcon.Info;
+            NI.Icon = this.Icon;
+            NI.Visible = true;
+            NI.ShowBalloonTip(1000);
         }
         private void NI_BallonTipClosed(Object sender, EventArgs e)
         {
-            notifyIcon1.Visible = false;
+            NI.Visible = false;
         }
 
         public void Read()
@@ -68,7 +71,6 @@ namespace Ftp_client
             {
                 a++;
                 Data.login_all[a] = line;
-                Console.WriteLine(line);
             }
             //close the file
             sr.Close();
@@ -95,7 +97,6 @@ namespace Ftp_client
                 {
                     listBox1.Items.Add(item);
                 }
-                Console.WriteLine($"Directory List Complete, status {response.StatusDescription}");
                 reader.Close();
                 response.Close();
             }
@@ -172,7 +173,7 @@ namespace Ftp_client
         private void button2_Click(object sender, EventArgs e)
         {
             Open_File();
-        }
+        } 
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
@@ -201,6 +202,7 @@ namespace Ftp_client
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            label2.Hide();
             Read();
             ip = Data.login_all[0];
             port = Data.login_all[1];

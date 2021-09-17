@@ -43,7 +43,7 @@ namespace Ftp_client
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(92, 170);
+            this.button1.Location = new System.Drawing.Point(22, 230);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
@@ -57,7 +57,7 @@ namespace Ftp_client
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(92, 217);
+            this.button2.Location = new System.Drawing.Point(22, 277);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 23);
             this.button2.TabIndex = 1;
@@ -68,7 +68,8 @@ namespace Ftp_client
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(92, 258);
+            this.label1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label1.Location = new System.Drawing.Point(22, 318);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 13);
             this.label1.TabIndex = 2;
@@ -85,7 +86,8 @@ namespace Ftp_client
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(92, 271);
+            this.label2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label2.Location = new System.Drawing.Point(22, 331);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 3;
@@ -94,15 +96,15 @@ namespace Ftp_client
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(82, 12);
+            this.listBox1.Location = new System.Drawing.Point(12, 72);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(124, 147);
+            this.listBox1.Size = new System.Drawing.Size(167, 147);
             this.listBox1.TabIndex = 5;
             this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(174, 217);
+            this.button3.Location = new System.Drawing.Point(104, 277);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 6;
@@ -119,7 +121,7 @@ namespace Ftp_client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(281, 337);
+            this.ClientSize = new System.Drawing.Size(191, 378);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.label2);
@@ -127,6 +129,7 @@ namespace Ftp_client
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Name = "Main_FTP_Form";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Main_FTP_Form";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);

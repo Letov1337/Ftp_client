@@ -8,9 +8,11 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using MaterialSkin;
+using MaterialSkin.Controls;
 namespace Ftp_client
 {
-    public partial class Login_form : Form
+    public partial class Login_form : MaterialForm
     {
         string ip;
         string login;
