@@ -43,21 +43,18 @@ namespace Ftp_client
             label1.Text = filename;
             return filename;
         }
-        //public async void Read()
-        //{
-        //    int a = -1;
-        //    Data.login_all = new string[5];
-        //    string writePath = Application.StartupPath + "\\login\\login.txt";
-        //    using (StreamReader sr = new StreamReader(writePath, System.Text.Encoding.Default))
-        //    {
-        //        string line;
-        //        while ((line = await sr.ReadLineAsync()) != null)
-        //        {
-        //            a++;
-        //            Data.login_all[a] = line;
-        //        }
-        //    }
-        //}
+        private void SetBalloonTip(string Upload_final)
+        {
+            notifyIcon1.Icon = SystemIcons.Exclamation;
+            notifyIcon1.BalloonTipTitle = "Balloon Tip Title";
+            notifyIcon1.BalloonTipText = Upload_final;
+            notifyIcon1.BalloonTipIcon = ToolTipIcon.Error;
+        }
+        private void NI_BallonTipClosed(Object sender, EventArgs e)
+        {
+            notifyIcon1.Visible = false;
+        }
+
         public void Read()
         {
             StreamReader sr = new StreamReader(Application.StartupPath + "\\login\\login.txt");
@@ -190,7 +187,9 @@ namespace Ftp_client
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            label1.Text = "Upload complete !";
+            string Upload_final = "Upload complete !";
+            label1.Text = Upload_final;
+            SetBalloonTip(Upload_final);
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)

@@ -29,6 +29,7 @@ namespace Ftp_client
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.button1 = new System.Windows.Forms.Button();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.button2 = new System.Windows.Forms.Button();
@@ -37,6 +38,7 @@ namespace Ftp_client
             this.label2 = new System.Windows.Forms.Label();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.button3 = new System.Windows.Forms.Button();
+            this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
             // button1
@@ -108,6 +110,11 @@ namespace Ftp_client
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon1.Text = "notifyIcon1";
+            this.notifyIcon1.Visible = true;
+            // 
             // Main_FTP_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,6 +144,7 @@ namespace Ftp_client
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.NotifyIcon notifyIcon1;
     }
 }
 

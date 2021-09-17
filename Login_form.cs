@@ -38,9 +38,9 @@ namespace Ftp_client
                     Data.login_all[a] = line;
                 }
                 ip_maskedTextBox1.Text = Data.login_all[0];
-                login_maskedTextBox3.Text = Data.login_all[1];
-                pass_maskedTextBox4.Text = Data.login_all[2];
-                port_maskedTextBox2.Text = Data.login_all[3];
+                port_maskedTextBox2.Text = Data.login_all[1];
+                login_maskedTextBox3.Text = Data.login_all[2];
+                pass_maskedTextBox4.Text = Data.login_all[3];
             }
         }
         public async void Write(string ip, string login, string password, string port)
