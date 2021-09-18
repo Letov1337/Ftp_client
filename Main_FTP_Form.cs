@@ -23,8 +23,8 @@ namespace Ftp_client
         string port;
         string login;
         string password;
-        string filename;
-        const double version_soft = 0.1;
+        string[] filename;
+        const double version_soft = 0.2;
         const string url = "https://pastebin.com/raw/8BSUmDWs";
         private NotifyIcon NI = new NotifyIcon();
         public Main_FTP_Form()
@@ -48,14 +48,17 @@ namespace Ftp_client
         {
             backgroundWorker1.RunWorkerAsync();
         }
-        private string Open_File()
+        private string[] Open_File()
         {
             if (openFileDialog1.ShowDialog() == DialogResult.Cancel)
             {
                 
             }
-            filename = openFileDialog1.FileName;
-            label1.Text = filename;
+            filename = openFileDialog1.FileNames;
+            for (int i = 0; i < filename.Length; i++)
+            {
+                listBox2.Items.Add(filename[i].ToString().Substring(filename[i].ToString().LastIndexOf(@"\") + 1));
+            }
             return filename;
         }
         private void SetBalloonTip(string Upload_final)
@@ -119,9 +122,13 @@ namespace Ftp_client
                 MessageBox.Show(ex.Message, "Ошибка");
             }
         }
-        private void FTPUploadFile(string filename)
+        private void FTPUploadFile()
         {
-               FileInfo fileInf = new FileInfo(filename);
+            for (int i = 0; i < filename.Length; i++)
+            {
+
+
+                FileInfo fileInf = new FileInfo(filename[i]);
                 if (selected_directory != null)
                 {
                     string uri = String.Format("ftp://{0}:{1}/", ip, port) + string.Format("/{0}/", selected_directory) + fileInf.Name;
@@ -134,7 +141,7 @@ namespace Ftp_client
                 // Создаем объект FtpWebRequest
                 reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(String.Format("ftp://{0}:{1}/", ip, port) + string.Format("/{0}/", selected_directory) + fileInf.Name));
                 // Учетная запись
-                reqFTP.Credentials = new NetworkCredential("test", "test");
+                reqFTP.Credentials = new NetworkCredential(login, password);
                 reqFTP.KeepAlive = false;
                 // Задаем команду на закачку
                 reqFTP.Method = WebRequestMethods.Ftp.UploadFile;
@@ -143,38 +150,38 @@ namespace Ftp_client
                 // Сообщаем серверу о размере файла
                 reqFTP.ContentLength = fileInf.Length;
 
-            // Буффер в 2 кбайт
+                // Буффер в 2 кбайт
                 int buffLength = 2048;
                 byte[] buff = new byte[buffLength];
                 int contentLen;
-            sw.Start();
-            // Файловый поток
+                sw.Start();
+                // Файловый поток
                 FileStream fs = fileInf.OpenRead();
-            try
+                try
                 {
-                 Stream strm = reqFTP.GetRequestStream();
+                    Stream strm = reqFTP.GetRequestStream();
                     // Читаем из потока по 2 кбайт
                     contentLen = fs.Read(buff, 0, buffLength);
-                // Пока файл не кончится
+                    // Пока файл не кончится
                     double total = (double)fs.Length;
                     double read = 0;
                     int counter = 0;
                     DateTime startTime = DateTime.Now;
-                while (contentLen != 0)
-                {
-                    if (!backgroundWorker1.CancellationPending)
+                    while (contentLen != 0)
                     {
-                        strm.Write(buff, 0, contentLen);
-                        contentLen = fs.Read(buff, 0, buffLength);
-                        read += (double)contentLen;
-                        double percentage = read / total * 100;
-                        backgroundWorker1.ReportProgress((int)percentage);
-                        counter += contentLen;
-                        down_speed = (Convert.ToDouble(counter) / DateTime.Now.Subtract(startTime).TotalSeconds)/1024/1024;
+                        if (!backgroundWorker1.CancellationPending)
+                        {
+                            strm.Write(buff, 0, contentLen);
+                            contentLen = fs.Read(buff, 0, buffLength);
+                            read += (double)contentLen;
+                            double percentage = read / total * 100;
+                            backgroundWorker1.ReportProgress((int)percentage);
+                            counter += contentLen;
+                            down_speed = (Convert.ToDouble(counter) / DateTime.Now.Subtract(startTime).TotalSeconds) / 1024 / 1024;
 
+                        }
                     }
-                }
-                // Закрываем потоки
+                    // Закрываем потоки
                     strm.Close();
                     fs.Close();
                 }
@@ -182,6 +189,7 @@ namespace Ftp_client
                 {
                     MessageBox.Show(ex.Message, "Ошибка");
                 }
+            }
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -191,7 +199,7 @@ namespace Ftp_client
 
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            FTPUploadFile(filename);
+            FTPUploadFile();
         }
 
         private void backgroundWorker1_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -230,8 +238,14 @@ namespace Ftp_client
         void panel1_DragDrop(object sender, DragEventArgs e)
         {
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
-            filename = files[0];
-            label1.Text = filename;
+            for (int i = 0; i < files.Length; i++)
+            {
+                filename = files;
+            }
+            for (int i = 0; i < filename.Length; i++)
+            {
+                listBox2.Items.Add(filename[i].ToString().Substring(filename[i].ToString().LastIndexOf(@"\") + 1));
+            }
             label3.Text = "Перетащи файлы сюда";
         }
 
