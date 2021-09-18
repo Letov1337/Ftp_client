@@ -123,6 +123,25 @@ namespace Ftp_client
             Read();
             Form2_load(ip, port);
         }
+
+        private void log_pass_checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (log_pass_checkBox1.Checked == true)
+            {
+                login_maskedTextBox3.Show();
+                pass_maskedTextBox4.Show();
+                login_label2.Show();
+                pass_label3.Show();
+
+            }
+            else
+            {
+                login_maskedTextBox3.Hide();
+                pass_maskedTextBox4.Hide();
+                login_label2.Hide();
+                pass_label3.Hide();
+            }
+        }
     }
 
 }

@@ -23,6 +23,7 @@ namespace Ftp_client
     static class Data
     {
         public static string[] login_all { get; set; }
+        public static bool login_pass { get; set; }
     }
     
 }

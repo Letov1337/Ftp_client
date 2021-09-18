@@ -34,10 +34,11 @@ namespace Ftp_client
             this.login_maskedTextBox3 = new System.Windows.Forms.MaskedTextBox();
             this.pass_maskedTextBox4 = new System.Windows.Forms.MaskedTextBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
+            this.login_label2 = new System.Windows.Forms.Label();
+            this.pass_label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
+            this.log_pass_checkBox1 = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // ip_maskedTextBox1
@@ -62,6 +63,7 @@ namespace Ftp_client
             this.login_maskedTextBox3.Name = "login_maskedTextBox3";
             this.login_maskedTextBox3.Size = new System.Drawing.Size(100, 20);
             this.login_maskedTextBox3.TabIndex = 2;
+            this.login_maskedTextBox3.Visible = false;
             // 
             // pass_maskedTextBox4
             // 
@@ -69,6 +71,7 @@ namespace Ftp_client
             this.pass_maskedTextBox4.Name = "pass_maskedTextBox4";
             this.pass_maskedTextBox4.Size = new System.Drawing.Size(100, 20);
             this.pass_maskedTextBox4.TabIndex = 3;
+            this.pass_maskedTextBox4.Visible = false;
             // 
             // label1
             // 
@@ -80,25 +83,27 @@ namespace Ftp_client
             this.label1.TabIndex = 4;
             this.label1.Text = "Ip:";
             // 
-            // label2
+            // login_label2
             // 
-            this.label2.AutoSize = true;
-            this.label2.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label2.Location = new System.Drawing.Point(17, 112);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(36, 13);
-            this.label2.TabIndex = 5;
-            this.label2.Text = "Login:";
+            this.login_label2.AutoSize = true;
+            this.login_label2.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.login_label2.Location = new System.Drawing.Point(17, 112);
+            this.login_label2.Name = "login_label2";
+            this.login_label2.Size = new System.Drawing.Size(36, 13);
+            this.login_label2.TabIndex = 5;
+            this.login_label2.Text = "Login:";
+            this.login_label2.Visible = false;
             // 
-            // label3
+            // pass_label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.label3.Location = new System.Drawing.Point(17, 149);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(33, 13);
-            this.label3.TabIndex = 6;
-            this.label3.Text = "Pass:";
+            this.pass_label3.AutoSize = true;
+            this.pass_label3.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pass_label3.Location = new System.Drawing.Point(17, 149);
+            this.pass_label3.Name = "pass_label3";
+            this.pass_label3.Size = new System.Drawing.Size(33, 13);
+            this.pass_label3.TabIndex = 6;
+            this.pass_label3.Text = "Pass:";
+            this.pass_label3.Visible = false;
             // 
             // label4
             // 
@@ -120,15 +125,27 @@ namespace Ftp_client
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // log_pass_checkBox1
+            // 
+            this.log_pass_checkBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.log_pass_checkBox1.Location = new System.Drawing.Point(165, 94);
+            this.log_pass_checkBox1.Name = "log_pass_checkBox1";
+            this.log_pass_checkBox1.Size = new System.Drawing.Size(88, 50);
+            this.log_pass_checkBox1.TabIndex = 9;
+            this.log_pass_checkBox1.Text = "Имеется логин и пароль?";
+            this.log_pass_checkBox1.UseVisualStyleBackColor = false;
+            this.log_pass_checkBox1.CheckedChanged += new System.EventHandler(this.log_pass_checkBox1_CheckedChanged);
+            // 
             // Login_form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(262, 224);
+            this.Controls.Add(this.log_pass_checkBox1);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
+            this.Controls.Add(this.pass_label3);
+            this.Controls.Add(this.login_label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pass_maskedTextBox4);
             this.Controls.Add(this.login_maskedTextBox3);
@@ -150,9 +167,10 @@ namespace Ftp_client
         private System.Windows.Forms.MaskedTextBox login_maskedTextBox3;
         private System.Windows.Forms.MaskedTextBox pass_maskedTextBox4;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label login_label2;
+        private System.Windows.Forms.Label pass_label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.CheckBox log_pass_checkBox1;
     }
 }
