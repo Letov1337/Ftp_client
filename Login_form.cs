@@ -19,7 +19,7 @@ namespace Ftp_client
         string login;
         string password;
         string port;
-        const double version_soft = 0.1;
+        const double version_soft = 0.2;
         const string url = "https://pastebin.com/raw/8BSUmDWs";
         int b = 1; 
         public Login_form()
