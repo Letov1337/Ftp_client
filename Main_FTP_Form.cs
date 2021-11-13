@@ -24,6 +24,7 @@ namespace Ftp_client
         string login;
         string password;
         string[] filename;
+        bool proverka = false;
         const double version_soft = 0.2;
         const string url = "https://pastebin.com/raw/8BSUmDWs";
         private NotifyIcon NI = new NotifyIcon();
@@ -124,71 +125,79 @@ namespace Ftp_client
         }
         private void FTPUploadFile()
         {
-            for (int i = 0; i < filename.Length; i++)
+            if (filename != null)
             {
-
-
-                FileInfo fileInf = new FileInfo(filename[i]);
-                if (selected_directory != null)
+                for (int i = 0; i < filename.Length; i++)
                 {
-                    string uri = String.Format("ftp://{0}:{1}/", ip, port) + string.Format("/{0}/", selected_directory) + fileInf.Name;
-                }
-                else
-                {
-                    MessageBox.Show("Нужно выбрать элемент!");
-                }
-                FtpWebRequest reqFTP;
-                // Создаем объект FtpWebRequest
-                reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(String.Format("ftp://{0}:{1}/", ip, port) + string.Format("/{0}/", selected_directory) + fileInf.Name));
-                // Учетная запись
-                reqFTP.Credentials = new NetworkCredential(login, password);
-                reqFTP.KeepAlive = false;
-                // Задаем команду на закачку
-                reqFTP.Method = WebRequestMethods.Ftp.UploadFile;
-                // Тип передачи файла
-                reqFTP.UseBinary = true;
-                // Сообщаем серверу о размере файла
-                reqFTP.ContentLength = fileInf.Length;
-
-                // Буффер в 2 кбайт
-                int buffLength = 2048;
-                byte[] buff = new byte[buffLength];
-                int contentLen;
-                sw.Start();
-                // Файловый поток
-                FileStream fs = fileInf.OpenRead();
-                try
-                {
-                    Stream strm = reqFTP.GetRequestStream();
-                    // Читаем из потока по 2 кбайт
-                    contentLen = fs.Read(buff, 0, buffLength);
-                    // Пока файл не кончится
-                    double total = (double)fs.Length;
-                    double read = 0;
-                    int counter = 0;
-                    DateTime startTime = DateTime.Now;
-                    while (contentLen != 0)
+                    FileInfo fileInf = new FileInfo(filename[i]);
+                    if (selected_directory != null)
                     {
-                        if (!backgroundWorker1.CancellationPending)
-                        {
-                            strm.Write(buff, 0, contentLen);
-                            contentLen = fs.Read(buff, 0, buffLength);
-                            read += (double)contentLen;
-                            double percentage = read / total * 100;
-                            backgroundWorker1.ReportProgress((int)percentage);
-                            counter += contentLen;
-                            down_speed = (Convert.ToDouble(counter) / DateTime.Now.Subtract(startTime).TotalSeconds) / 1024 / 1024;
-
-                        }
+                        string uri = String.Format("ftp://{0}:{1}/", ip, port) + string.Format("/{0}/", selected_directory) + fileInf.Name;
                     }
-                    // Закрываем потоки
-                    strm.Close();
-                    fs.Close();
+                    else
+                    {
+                        MessageBox.Show("Нужно выбрать элемент!");
+                        proverka = true;
+                        break;
+                    }
+                    FtpWebRequest reqFTP;
+                    // Создаем объект FtpWebRequest
+                    reqFTP = (FtpWebRequest)FtpWebRequest.Create(new Uri(String.Format("ftp://{0}:{1}/", ip, port) + string.Format("/{0}/", selected_directory) + fileInf.Name));
+                    // Учетная запись
+                    reqFTP.Credentials = new NetworkCredential(login, password);
+                    reqFTP.KeepAlive = false;
+                    // Задаем команду на закачку
+                    reqFTP.Method = WebRequestMethods.Ftp.UploadFile;
+                    // Тип передачи файла
+                    reqFTP.UseBinary = true;
+                    // Сообщаем серверу о размере файла
+                    reqFTP.ContentLength = fileInf.Length;
+
+                    // Буффер в 2 кбайт
+                    int buffLength = 2048;
+                    byte[] buff = new byte[buffLength];
+                    int contentLen;
+                    sw.Start();
+                    // Файловый поток
+                    FileStream fs = fileInf.OpenRead();
+                    try
+                    {
+                        Stream strm = reqFTP.GetRequestStream();
+                        // Читаем из потока по 2 кбайт
+                        contentLen = fs.Read(buff, 0, buffLength);
+                        // Пока файл не кончится
+                        double total = (double)fs.Length;
+                        double read = 0;
+                        int counter = 0;
+                        DateTime startTime = DateTime.Now;
+                        while (contentLen != 0)
+                        {
+                            if (!backgroundWorker1.CancellationPending)
+                            {
+                                strm.Write(buff, 0, contentLen);
+                                contentLen = fs.Read(buff, 0, buffLength);
+                                read += (double)contentLen;
+                                double percentage = read / total * 100;
+                                backgroundWorker1.ReportProgress((int)percentage);
+                                counter += contentLen;
+                                down_speed = (Convert.ToDouble(counter) / DateTime.Now.Subtract(startTime).TotalSeconds) / 1024 / 1024;
+
+                            }
+                        }
+                        // Закрываем потоки\
+                        proverka = false;
+                        strm.Close();
+                        fs.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Ошибка");
+                    }
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message, "Ошибка");
-                }
+            }
+            else
+            {
+                proverka = true;
             }
         }
 
@@ -210,9 +219,22 @@ namespace Ftp_client
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            string Upload_final = "Upload complete !";
-            label1.Text = Upload_final;
-            SetBalloonTip(Upload_final);
+            if (proverka == false)
+            {
+                string Upload_final = "Upload complete !";
+                if (Upload_final == "Upload complete !")
+                {
+                    listBox2.Items.Clear();
+                }
+                label1.Text = "";
+                label1.Text = Upload_final;
+                SetBalloonTip(Upload_final);
+            }
+            else
+            {
+                string Upload_final = "Upload error";
+                label1.Text = Upload_final;
+            }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -225,8 +247,6 @@ namespace Ftp_client
         private void Form1_Load(object sender, EventArgs e)
         {
             Updater();
-            //label1.Hide();
-            //label2.Hide();
             Read();
             ip = Data.login_all[0];
             port = Data.login_all[1];
@@ -267,6 +287,15 @@ namespace Ftp_client
         private void label2_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < filename.Count(); i++)
+            {
+                Array.Clear(filename, 0, i);
+            }
+            listBox2.Items.Clear();
         }
     }
 }

@@ -128,11 +128,11 @@ namespace Ftp_client
             // log_pass_checkBox1
             // 
             this.log_pass_checkBox1.BackColor = System.Drawing.SystemColors.ControlLightLight;
-            this.log_pass_checkBox1.Location = new System.Drawing.Point(165, 94);
+            this.log_pass_checkBox1.Location = new System.Drawing.Point(162, 94);
             this.log_pass_checkBox1.Name = "log_pass_checkBox1";
-            this.log_pass_checkBox1.Size = new System.Drawing.Size(88, 50);
+            this.log_pass_checkBox1.Size = new System.Drawing.Size(107, 50);
             this.log_pass_checkBox1.TabIndex = 9;
-            this.log_pass_checkBox1.Text = "Имеется логин и пароль?";
+            this.log_pass_checkBox1.Text = "Имеется логин или пароль?";
             this.log_pass_checkBox1.UseVisualStyleBackColor = false;
             this.log_pass_checkBox1.CheckedChanged += new System.EventHandler(this.log_pass_checkBox1_CheckedChanged);
             // 
